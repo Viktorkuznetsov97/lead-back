@@ -7,8 +7,8 @@ const createLeadService = async (leadData) => {
   return res;
 };
 
-const getAllLeadsService = async () => {
-  const res = await Lead.find();
+const getLeadsService = async (options = {}) => {
+  const res = await Lead.find(options);
   return res;
 };
 
@@ -19,6 +19,6 @@ const getCountLeadsService = async (options = {}) => {
 
 module.exports = {
   createLeadService,
-  getAllLeadsService,
+  getLeadsService,
   getCountLeadsService,
 };

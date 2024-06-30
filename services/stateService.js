@@ -1,6 +1,6 @@
 const State = require('../models/state');
 const { getZipCodesState, getZipCodesCity } = require('../utils/zipCodeHelpers');
-const { getCountLeadsService } = require('./leadService');
+const { getCountLeadsService, getLeadsService } = require('./leadService');
 
 const createStateService = async (stateData) => {
   try {
@@ -17,9 +17,16 @@ const updateZoneData = async (zone, stateName) => {
   try {
     const zoneCopy = { ...zone };
     const zipCodes = getZipCodesCity({ city: zoneCopy.name, state: stateName });
-    const leadsCount = await getCountLeadsService({ zip_code: { $in: zipCodes } });
-    zoneCopy.leads_count = leadsCount;
-    zoneCopy.zip_codes = zipCodes;
+    const leads = await getLeadsService({ zip_code: { $in: zipCodes } });
+    zoneCopy.leads_count = leads.length;
+
+    const zoneZipCodes = [];
+    leads.forEach((lead) => {
+      if (!zoneZipCodes.includes(lead.zip_code)) {
+        zoneZipCodes.push(lead.zip_code);
+      }
+    });
+    zoneCopy.zip_codes = zoneZipCodes;
     return zoneCopy;
   } catch (error) {
     console.error('Error updating city data:', error);

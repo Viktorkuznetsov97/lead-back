@@ -1,6 +1,6 @@
 const {
   createLeadService,
-  getAllLeadsService,
+  getLeadsService,
   getCountLeadsService,
 } = require('../services/leadService');
 
@@ -15,7 +15,7 @@ const createLeadController = async (req, res) => {
 
 const getAllLeadsController = async (req, res) => {
   try {
-    const leads = await getAllLeadsService();
+    const leads = await getLeadsService();
     const count = await getCountLeadsService();
     res.send({ count, data: leads });
   } catch (error) {
