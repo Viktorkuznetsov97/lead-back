@@ -19,6 +19,7 @@ const updateZoneData = async (zone, stateName) => {
     const zipCodes = getZipCodesCity({ city: zoneCopy.name, state: stateName });
     const leadsCount = await getCountLeadsService({ zip_code: { $in: zipCodes } });
     zoneCopy.leads_count = leadsCount;
+    zoneCopy.zip_codes = zipCodes;
     return zoneCopy;
   } catch (error) {
     console.error('Error updating city data:', error);
